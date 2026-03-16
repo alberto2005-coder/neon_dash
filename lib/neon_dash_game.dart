@@ -11,7 +11,7 @@ import 'components/obstacle.dart';
 
 enum GameShape { square, circle, triangle }
 
-class NeonDashGame extends FlameGame with TapCallbacks, HasCollisionDetection {
+class NeonDashGame extends FlameGame with TapCallbacks, KeyboardEvents, HasCollisionDetection {
   late Player player;
   late ObstacleManager obstacleManager;
   
@@ -97,6 +97,20 @@ class NeonDashGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   void onTapDown(TapDownEvent event) {
     if (overlays.isActive('MainMenu') || overlays.isActive('GameOver') || overlays.isActive('PauseMenu')) return;
     player.jump();
+  }
+
+  @override
+  KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    if (event is KeyDownEvent) {
+      if (keysPressed.contains(LogicalKeyboardKey.space) || 
+          keysPressed.contains(LogicalKeyboardKey.arrowUp)) {
+        if (!overlays.isActive('MainMenu') && !overlays.isActive('GameOver') && !overlays.isActive('PauseMenu')) {
+          player.jump();
+        }
+        return KeyEventResult.handled;
+      }
+    }
+    return super.onKeyEvent(event, keysPressed);
   }
 
   void startGame() {

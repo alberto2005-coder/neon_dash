@@ -32,9 +32,10 @@ Este archivo es una guía personal para que sepas dónde está cada cosa y cómo
 
 ## ⚙️ Ajustes Frecuentes
 
-### 1. Cambiar la Velocidad
-En `lib/neon_dash_game.dart`, busca la función `update`. 
-- `currentSpeed += 20;` -> Cambia el **20** para que acelere más o menos cada 5 segundos.
+### 1. Cambiar la Velocidad y Controles
+En `lib/neon_dash_game.dart`:
+- **Velocidad**: Busca `update`. `currentSpeed += 20;` -> Cambia el **20** para ajustar la aceleración.
+- **Controles**: El juego soporta **Espacio** y **Flecha Arriba** para saltar en Windows/Web. Se gestiona en `onKeyEvent`.
 
 ### 2. Editar Traducciones
 En `lib/neon_dash_game.dart`, busca el mapa `_translations`. Puedes añadir o cambiar palabras ahí tanto para `es` (Español) como para `en` (Inglés).
