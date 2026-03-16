@@ -2,7 +2,9 @@ import 'package:flame/game.dart';
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
+import 'dart:io' show Platform;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'components/background.dart';
 import 'components/player.dart';
@@ -132,9 +134,15 @@ class NeonDashGame extends FlameGame with TapCallbacks, KeyboardEvents, HasColli
 
   void gameOver() {
     pauseEngine();
-    FlameAudio.bgm.stop();
-    FlameAudio.play('sfx_explosion.mp3', volume: 0.7);
-    HapticFeedback.heavyImpact();
+    try {
+      FlameAudio.bgm.stop();
+      FlameAudio.play('sfx_explosion.mp3', volume: 0.7);
+    } catch (_) {}
+    
+    // Avoid haptics on desktop to prevent potential threading crashes in some drivers
+    if (!kIsWeb && Platform.isAndroid || Platform.isIOS) {
+      HapticFeedback.heavyImpact();
+    }
     
     if (score.toInt() > highScore) {
       highScore = score.toInt();
@@ -156,8 +164,10 @@ class NeonDashGame extends FlameGame with TapCallbacks, KeyboardEvents, HasColli
     obstacleManager.reset();
     children.whereType<Obstacle>().forEach((o) => o.removeFromParent());
     
-    FlameAudio.bgm.stop();
-    FlameAudio.bgm.play('music_game.mp3', volume: 0.5);
+    try {
+      FlameAudio.bgm.stop();
+      FlameAudio.bgm.play('music_game.mp3', volume: 0.5);
+    } catch (_) {}
     
     overlays.remove('GameOver');
     overlays.remove('PauseMenu');
