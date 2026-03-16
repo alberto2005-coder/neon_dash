@@ -37,6 +37,7 @@ class NeonDashGame extends FlameGame with TapCallbacks, KeyboardEvents, HasColli
       'record': 'RÉCORD: ',
       'engage_restart': 'REINTENTAR',
       'back_menu': 'VOLVER AL MENÚ',
+      'quit': 'SALIR DEL JUEGO',
     },
     'en': {
       'menu_title': 'NEON DASH',
@@ -52,6 +53,7 @@ class NeonDashGame extends FlameGame with TapCallbacks, KeyboardEvents, HasColli
       'record': 'RECORD: ',
       'engage_restart': 'ENGAGE RESTART',
       'back_menu': 'BACK TO MENU',
+      'quit': 'QUIT GAME',
     },
   };
 

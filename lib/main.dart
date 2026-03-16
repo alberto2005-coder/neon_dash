@@ -1,5 +1,8 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/services.dart';
+import 'dart:io' show Platform;
 import 'neon_dash_game.dart';
 
 void main() {
@@ -151,6 +154,17 @@ class MainMenuOverlay extends StatelessWidget {
                         onPressed: () => game.startGame(),
                         child: Text(game.t('start')),
                       ),
+                      if (!kIsWeb && (Platform.isWindows || Platform.isMacOS || Platform.isLinux))
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: TextButton(
+                            onPressed: () => SystemNavigator.pop(),
+                            child: Text(
+                              game.t('quit'),
+                              style: const TextStyle(color: Colors.white54, fontSize: 14),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),

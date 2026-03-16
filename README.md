@@ -35,7 +35,8 @@ Este archivo es una guía personal para que sepas dónde está cada cosa y cómo
 ### 1. Cambiar la Velocidad y Controles
 En `lib/neon_dash_game.dart`:
 - **Velocidad**: Busca `update`. `currentSpeed += 20;` -> Cambia el **20** para ajustar la aceleración.
-- **Controles**: El juego soporta **Espacio** y **Flecha Arriba** para saltar en Windows/Web. Se gestiona en `onKeyEvent`.
+- **Controles**: Soporta **Espacio** y **Flecha Arriba** para saltar en Windows/Web. Se gestiona en `onKeyEvent`.
+- **Botón Salir**: Aparece automáticamente solo en Windows/Mac/Linux. Se gestiona en `main.dart`.
 
 ### 2. Editar Traducciones
 En `lib/neon_dash_game.dart`, busca el mapa `_translations`. Puedes añadir o cambiar palabras ahí tanto para `es` (Español) como para `en` (Inglés).
