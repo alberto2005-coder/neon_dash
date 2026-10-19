@@ -48,8 +48,7 @@ Si quieres añadir un color nuevo al menú, ve a `lib/main.dart` y busca `_color
 
 ## 📦 Entrega Final
 *   **Versión actual**: 1.0.0
-*   **Ubicación APK**: `build/app/outputs/flutter-apk/app-release.apk`
-*   **Ubicación AAB**: `build/app/outputs/bundle/release/app-release.aab`
+*   **Probar y descargar** En este repo y en [itch.io](https://alberto-coder2005.itch.io/neon-dash)
 
 ---
 
