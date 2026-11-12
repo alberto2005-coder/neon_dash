@@ -1,118 +1,244 @@
-# 🛠️ Manual de Desarrollador - Neon Dash
+# Neon Dash
 
-Este archivo es una guía personal para que sepas dónde está cada cosa y cómo editar el juego sin complicaciones. **Este documento es privado y para uso interno.**
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)](https://flutter.dev/)
+[![Flame](https://img.shields.io/badge/Flame-1.18%2B-FF6D00)](https://flame-engine.org/)
+[![itch.io](https://img.shields.io/badge/Jugar-itch.io-FA5C5C?logo=itchdotio&logoColor=white)](https://alberto-coder2005.itch.io/neon-dash)
+[![MIT](https://img.shields.io/badge/Licencia-MIT-green)](LICENSE)
 
----
-
-## 📌 Guía Rápida de Archivos
-
-| Si quieres cambiar... | Ve a este archivo: |
-| :--- | :--- |
-| **Puntuación y Velocidad** | `lib/neon_dash_game.dart` |
-| **Colores y Formas del Jugador** | `lib/components/player.dart` |
-| **Obstáculos (Tipos y Frecuencia)** | `lib/components/obstacle_manager.dart` |
-| **Textos y Traducciones** | `lib/neon_dash_game.dart` (Mapa `_translations`) |
-| **Menús (Diseño, Botones)** | `lib/main.dart` |
-| **Fondo y Colores Dinámicos** | `lib/components/background.dart` |
-| **Logo de la App** | `assets/images/logo.png` |
+[Español](#español) · [English](#english)
 
 ---
 
-## 🚀 Comandos de Terminal Útiles
+## Español
 
-Úsalos en la carpeta raíz del proyecto:
+### Índice
 
-*   **Instalar todo**: `flutter pub get` (Hazlo si descargas el proyecto de nuevo).
-*   **Limpiar proyecto**: `flutter clean` (Si algo no compila bien).
-*   **Generar Icono**: `flutter pub run flutter_launcher_icons` (Hazlo si cambias el `logo.png`).
-*   **Crear APK (Instalación)**: `flutter build apk --release`
-*   **Crear AAB (Galaxy Store)**: `flutter build appbundle --release`
+- [Descripción](#descripción)
+- [Cómo jugar](#cómo-jugar)
+- [Características](#características)
+- [Descarga](#descarga)
+- [Guía de desarrollo](#guía-de-desarrollo)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Compilación](#compilación)
+- [Licencia](#licencia)
+
+### Descripción
+
+**Neon Dash** es un *endless runner* arcade construido con **Flutter** y el motor **Flame**. Controlas una figura geométrica que avanza sin parar por un mundo cibernético: salta los obstáculos, aguanta todo lo que puedas y persigue tu mejor marca. La dificultad sube con la velocidad, la música cambia y la puntuación se guarda en el dispositivo.
+
+### Cómo jugar
+
+| Plataforma | Control |
+|---|---|
+| Móvil | Toca la pantalla para saltar |
+| Web / escritorio | `Espacio` o `↑` para saltar |
+
+- Toca o pulsa **una vez** por salto; el salto doble no existe, así que mide el momento.
+- Los obstáculos aparecen en patrones cada vez más rápidos.
+- La partida termina al chocar; el mejor resultado se guarda con `shared_preferences`.
+- En escritorio aparece un botón de salir; en móvil se usa el gesto del sistema.
+
+### Características
+
+- **Motor Flame** con bucle de juego propio y gestión de escenas.
+- **Dificultad progresiva**: la velocidad aumenta con la distancia recorrida.
+- **Generación de obstáculos** por patrones, con varios tipos y separaciones variables.
+- **Sistema de partículas** para saltos y colisiones.
+- **Fondo dinámico** que cambia de color según la partida.
+- **Audio** de menú, música de juego y efectos de salto y explosión.
+- **Selección de color** del jugador y menús bilingües español/inglés.
+- **Récord persistente** entre sesiones.
+
+### Descarga
+
+- **itch.io:** <https://alberto-coder2005.itch.io/neon-dash>
+- **Versión:** 1.0.0
+- También puedes compilarlo tú mismo desde el código fuente (ver más abajo).
+
+### Guía de desarrollo
+
+Esta sección recoge la antigua guía interna del proyecto, ahora pública, para saber dónde tocar cada cosa.
+
+| Si quieres cambiar… | Ve a este archivo |
+|---|---|
+| Puntuación y velocidad | `lib/neon_dash_game.dart` |
+| Colores y formas del jugador | `lib/components/player.dart` |
+| Obstáculos (tipos y frecuencia) | `lib/components/obstacle_manager.dart` |
+| Textos y traducciones | `lib/neon_dash_game.dart` (mapa `_translations`) |
+| Menús (diseño y botones) | `lib/main.dart` |
+| Fondo y colores dinámicos | `lib/components/background.dart` |
+| Logo de la app | `assets/images/logo.png` |
+
+**Ajustar la dificultad.** En `lib/neon_dash_game.dart`, dentro de `update`, la línea `currentSpeed += 20;` controla la aceleración: sube o baja ese `20` para que la partida se acelere antes o después.
+
+**Traducciones.** En `lib/neon_dash_game.dart`, el mapa `_translations` contiene las claves `es` y `en`. Añadir una palabra es añadirla en ambos idiomas.
+
+**Añadir un color al jugador.** En `lib/main.dart`, busca `_colorButton` y duplica el botón con el color nuevo.
+
+**Cambiar el icono.** Sustituye `assets/images/logo.png` y ejecuta `flutter pub run flutter_launcher_icons`.
+
+### Estructura del proyecto
+
+```text
+neon_dash/
+├── lib/
+│   ├── main.dart                     # Arranque, menús y selección de color
+│   ├── neon_dash_game.dart           # Bucle principal, puntuación, velocidad y textos
+│   └── components/
+│       ├── player.dart               # Jugador y salto
+│       ├── obstacle.dart             # Obstáculo individual
+│       ├── obstacle_manager.dart     # Patrones y frecuencia de obstáculos
+│       ├── background.dart           # Fondo y colores dinámicos
+│       └── particle_system.dart      # Partículas de salto y colisión
+├── assets/
+│   ├── audio/                        # Música y efectos
+│   └── images/logo.png               # Icono de la app
+├── android/ · ios/ · web/ · windows/ · macos/ · linux/
+├── test/widget_test.dart
+├── pubspec.yaml
+├── LICENSE
+└── README.md
+```
+
+### Compilación
+
+Requisitos: **Flutter 3.x** (Dart 3.11+) y un emulador, dispositivo o navegador.
+
+```bash
+git clone https://github.com/alberto2005-coder/neon_dash.git
+cd neon_dash
+flutter pub get
+flutter run                # desarrollo
+flutter build apk --release    # Android
+flutter build appbundle --release  # Google Play / Galaxy Store
+flutter build web              # web estática en build/web
+```
+
+Comandos de mantenimiento:
+
+```bash
+flutter clean       # si algo deja de compilar
+flutter pub get     # al descargar el proyecto de nuevo
+```
+
+### Licencia
+
+**MIT** — consulta [LICENSE](LICENSE).
 
 ---
 
-## ⚙️ Ajustes Frecuentes
+## English
 
-### 1. Cambiar la Velocidad y Controles
-En `lib/neon_dash_game.dart`:
-- **Velocidad**: Busca `update`. `currentSpeed += 20;` -> Cambia el **20** para ajustar la aceleración.
-- **Controles**: Soporta **Espacio** y **Flecha Arriba** para saltar en Windows/Web. Se gestiona en `onKeyEvent`.
-- **Botón Salir**: Aparece automáticamente solo en Windows/Mac/Linux. Se gestiona en `main.dart`.
+### Table of contents
 
-### 2. Editar Traducciones
-En `lib/neon_dash_game.dart`, busca el mapa `_translations`. Puedes añadir o cambiar palabras ahí tanto para `es` (Español) como para `en` (Inglés).
+- [Overview](#overview)
+- [How to play](#how-to-play)
+- [Features](#features)
+- [Download](#download)
+- [Development guide](#development-guide)
+- [Project structure](#project-structure)
+- [Building](#building)
+- [License](#license)
 
-### 3. Personalización del Jugador
-Si quieres añadir un color nuevo al menú, ve a `lib/main.dart` y busca `_colorButton`. Solo tienes que añadir un botón más con el color que quieras.
+### Overview
 
----
+**Neon Dash** is an arcade *endless runner* built with **Flutter** and the **Flame** engine. You control a geometric shape racing through a cyber world: jump the obstacles, survive as long as you can and chase your best score. Difficulty ramps up with speed, the music shifts and your record is stored on the device.
 
-## 📦 Entrega Final
-*   **Versión actual**: 1.0.0
-*   **Probar y descargar** En este repo y en [itch.io](https://alberto-coder2005.itch.io/neon-dash)
+### How to play
 
----
+| Platform | Control |
+|---|---|
+| Mobile | Tap the screen to jump |
+| Web / desktop | `Space` or `↑` to jump |
 
-*Nota: Todas las dependencias (Flame, Shared Preferences) están configuradas en `pubspec.yaml`. No las borres a menos que sepas qué estás haciendo.*
+- Tap or press **once** per jump; there is no double jump, so time it well.
+- Obstacles arrive in patterns that get faster and tighter.
+- The run ends on collision; the best score is saved with `shared_preferences`.
+- Desktop builds show a quit button; mobile uses the system gesture.
 
+### Features
 
+- **Flame engine** with its own game loop and scene handling.
+- **Progressive difficulty**: speed increases with distance travelled.
+- **Pattern-based obstacle generation** with several types and varying gaps.
+- **Particle system** for jumps and collisions.
+- **Dynamic background** that shifts colour as you run.
+- **Audio**: menu theme, gameplay music and jump/explosion effects.
+- **Player colour picker** and bilingual Spanish/English menus.
+- **Persistent high score** across sessions.
 
----
+### Download
 
-# English Version
+- **itch.io:** <https://alberto-coder2005.itch.io/neon-dash>
+- **Version:** 1.0.0
+- You can also build it yourself from source (see below).
 
-🛠️ **Developer Manual — Neon Dash**
+### Development guide
 
-This file is a personal guide so you know where everything is and how to edit the game without hassle. **This document is private and for internal use.**
+This section turns the project's former internal notes into public documentation, so you know where to change what.
 
----
+| If you want to change… | Go to this file |
+|---|---|
+| Score and speed | `lib/neon_dash_game.dart` |
+| Player colours and shapes | `lib/components/player.dart` |
+| Obstacles (types and frequency) | `lib/components/obstacle_manager.dart` |
+| Texts and translations | `lib/neon_dash_game.dart` (`_translations` map) |
+| Menus (layout and buttons) | `lib/main.dart` |
+| Background and dynamic colours | `lib/components/background.dart` |
+| App logo | `assets/images/logo.png` |
 
-## 📌 Quick File Guide
+**Tune the difficulty.** In `lib/neon_dash_game.dart`, inside `update`, the line `currentSpeed += 20;` drives acceleration: raise or lower that `20` to speed the run up sooner or later.
 
-| If you want to change... | Go to this file: |
-| :--- | :--- |
-| **Score and Speed** | `lib/neon_dash_game.dart` |
-| **Player Colors and Shapes** | `lib/components/player.dart` |
-| **Obstacles (Types and Frequency)** | `lib/components/obstacle_manager.dart` |
-| **Texts and Translations** | `lib/neon_dash_game.dart` (`_translations` map) |
-| **Menus (Layout, Buttons)** | `lib/main.dart` |
-| **Background and Dynamic Colors** | `lib/components/background.dart` |
-| **App Logo** | `assets/images/logo.png` |
+**Translations.** In `lib/neon_dash_game.dart`, the `_translations` map holds the `es` and `en` keys. Add a word to both languages.
 
----
+**Add a player colour.** In `lib/main.dart`, find `_colorButton` and duplicate the button with the new colour.
 
-## 🚀 Useful Terminal Commands
+**Change the icon.** Replace `assets/images/logo.png` and run `flutter pub run flutter_launcher_icons`.
 
-Run them from the project root folder:
+### Project structure
 
-*   **Install everything**: `flutter pub get` (Run it if you download the project again.)
-*   **Clean project**: `flutter clean` (If something does not build properly.)
-*   **Generate icon**: `flutter pub run flutter_launcher_icons` (Run it if you change `logo.png`.)
-*   **Build APK (installation)**: `flutter build apk --release`
-*   **Build AAB (Galaxy Store)**: `flutter build appbundle --release`
+```text
+neon_dash/
+├── lib/
+│   ├── main.dart                     # Bootstrap, menus and colour picker
+│   ├── neon_dash_game.dart           # Main loop, score, speed and strings
+│   └── components/
+│       ├── player.dart               # Player and jumping
+│       ├── obstacle.dart             # Single obstacle
+│       ├── obstacle_manager.dart     # Obstacle patterns and frequency
+│       ├── background.dart           # Background and dynamic colours
+│       └── particle_system.dart      # Jump and collision particles
+├── assets/
+│   ├── audio/                        # Music and sound effects
+│   └── images/logo.png               # App icon
+├── android/ · ios/ · web/ · windows/ · macos/ · linux/
+├── test/widget_test.dart
+├── pubspec.yaml
+├── LICENSE
+└── README.md
+```
 
----
+### Building
 
-## ⚙️ Common Adjustments
+Requirements: **Flutter 3.x** (Dart 3.11+) and an emulator, device or browser.
 
-### 1. Changing Speed and Controls
-In `lib/neon_dash_game.dart`:
-- **Speed**: Search for `update`. `currentSpeed += 20;` -> Change **20** to adjust the acceleration.
-- **Controls**: Supports **Space** and **Up Arrow** to jump on Windows/Web. Handled in `onKeyEvent`.
-- **Quit Button**: Appears automatically only on Windows/Mac/Linux. Handled in `main.dart`.
+```bash
+git clone https://github.com/alberto2005-coder/neon_dash.git
+cd neon_dash
+flutter pub get
+flutter run                # development
+flutter build apk --release    # Android
+flutter build appbundle --release  # Google Play / Galaxy Store
+flutter build web              # static site in build/web
+```
 
-### 2. Editing Translations
-In `lib/neon_dash_game.dart`, find the `_translations` map. You can add or change words there for both `es` (Spanish) and `en` (English).
+Maintenance commands:
 
-### 3. Player Customization
-If you want to add a new color to the menu, go to `lib/main.dart` and find `_colorButton`. You only need to add one more button with the color you want.
+```bash
+flutter clean       # if the build breaks
+flutter pub get     # after re-downloading the project
+```
 
----
+### License
 
-## 📦 Final Release
-*   **Current version**: 1.0.0
-*   **Try and download**: In this repo and on [itch.io](https://alberto-coder2005.itch.io/neon-dash)
-
----
-
-*Note: All dependencies (Flame, Shared Preferences) are configured in `pubspec.yaml`. Do not delete them unless you know what you are doing.*
-
+**MIT** — see [LICENSE](LICENSE).
